@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="shortcut icon" href="Logo.png" type="image/x-icon">
+    <link href="./output.css" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <title>Lesson Planner</title>
+</head>
+
+<body class="bg-gray-300">
+   
+    <nav
+        class="bg-white shadow dark:bg-gray-900 fixed top-0 left-0 right-0 w-full z-0 border-b dark:border-gray-700 h-20 flex items-center ps-4 lg:ps-0">
+        <i class="fa-solid fa-bars text-2xl lg:hidden dark:text-white" id="openbtn" onclick="openNav()"></i>
+        <div class="flex items-center justify-center lg:justify-start lg:ps-80 text-gray-600 capitalize dark:text-gray-300 h-20 flex-1">
+            <h1 class="text-2xl sm:text-4xl">The Lesson Planner</h1>
+        </div>
+    </nav>
+    
+    <main>
+        <section class="flex">
+            <div class="hidden  relative transition-all ease-in duration-300" id="mySideBar">
+                <i class="fa-regular fa-circle-xmark lg:hidden fixed top-1 left-56 text-3xl z-50 dark:text-white" id="closebtn" onclick="closeNav()"></i>
+                <aside
+                    class=" z-10 flex flex-col   px-4 overflow-y-auto bg-white dark:bg-gray-900 border-r dark:border-gray-700" id="plans-list-aside">
+                    <a href="#" class="mx-auto">
+                        
+                    </a>
+
+                    <div class="flex flex-col items-center mt-6 mx-2">
+                        <img id="avatar"
+                            class="object-cover w-24 h-24 mx-2 rounded-full cursor-pointer hover:opacity-50 hover:border-2 border-blue-50"
+                            src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+                            alt="avatar">
+                        <input type="file" id="fileInput" accept="image/*" class="hidden">
+                        <h4 class="mx-2 mt-2 font-medium text-gray-800 dark:text-gray-200">John Doe</h4>
+                        <p class="mx-2 mt-1 text-sm font-medium text-gray-600 dark:text-gray-400">john@example.com</p>
+                    </div>
+
+                    <div class="flex flex-col flex-1 mt-6 ">
+                        <nav id="plans-list-container">
+                            <a onclick="displayDashboard()" id="dashboard-heading"
+                                class="flex items-center px-4 py-2 text-gray-700 rounded-lg dark:bg-gray-800 dark:text-gray-200"
+                                href="#">
+                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+
+                                <span class="mx-4 font-medium ">Dashboard</span>
+                            </a>
+                        </nav>
+                    </div>
+                </aside>
+            </div>
+            <div class="overlay" id="overlay" onclick="alsoclose()"></div>
+            <div class=" px-3 md:px-1 w-full box-border py-8 flex justify-center flex-col gap-5 min-h-screen flex-wrap"
+                id="dashboard">
+                <span class="flex justify-center items-center flex-col gap-5" id="dashboard-hero-section">
+                    <h1 class="text-xl sm:text-3xl text-center font-bold">Welcome to Lesson Planner! Create your best plans</h1>
+                    <button id="createNewPlan"
+                        class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded">Create New
+                        Plan</button>
+                </span>
+
+                
+
+                <div id="success-alert"
+                    class="hidden p-4 mb-4 w-2/3 mx-auto transition-all duration-1000 ease-in-out text-sm opacity-100 transform -translate-y-40 text-green-800 rounded-lg bg-blue-50 dark:bg-green-400 dark:text-white"
+                    role="alert">
+                    <span class="font-medium">Success!</span> Your New Plan has been created.
+                </div>
+
+                <div id="failure-alert"
+                    class="hidden p-4 mb-4 w-2/3 mx-auto transition-all duration-1000 ease-in-out text-sm opacity-100 transform -translate-y-40 text-red-800 rounded-lg bg-blue-50 dark:bg-red-400 dark:text-white"
+                    role="alert">
+                    <span class="font-medium">Failure!</span> Fill out all the fields.
+                </div>
+
+                <div class="hidden mx-auto w-full" id="plan-details">
+                    <div class="flex justify-center md:justify-end gap-4 w-full mb-4 ">
+                        <button id="edit-plan" type="button"
+                            class="bg-gray-700 border border-black hover:bg-gray-800 text-white font-semibold px-5 py-2 rounded-lg">Edit</button>
+                        <button id="delete-plan" type="button"
+                            class="bg-gray-700 border border-black hover:bg-gray-800 text-white font-semibold px-5 py-2 rounded-lg me-4">Delete</button>
+                    </div>
+                    <div id="weeks-wrapper">
+
+                    </div>
+                   
+                </div>
+
+                <div class="hidden w-full px-4 md:px-0 md:w-3/4 mx-auto" id="form">
+                    <div class="flex flex-col justify-center">
+                        <label for="default-input"
+                            class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-900">Subject</label>
+                        <input required type="text" id="subject-input"
+                            class="mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+
+                        <h3 class="mb-2 font-medium text-lg text-gray-900 dark:text-gray-900">Days Per Week</h3>
+                        <ul
+                            class="scrollbar-custom overflow-x-auto mb-4 tems-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center ps-3">
+                                    <input id="monday" name="day" type="checkbox" value="Monday"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="monday"
+                                        class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Monday</label>
+                                </div>
+                            </li>
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600 ">
+                                <div class="flex items-center ps-3">
+                                    <input id="tuesday" name="day" type="checkbox" value="Tuesday"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="tuesday"
+                                        class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Tuesday</label>
+                                </div>
+                            </li>
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center ps-3">
+                                    <input id="wednesday" name="day" type="checkbox" value="Wednesday"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="wednesday"
+                                        class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Wednesday</label>
+                                </div>
+                            </li>
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center ps-3">
+                                    <input id="thursday" name="day" type="checkbox" value="Thursday"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="thursday"
+                                        class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Thursday</label>
+                                </div>
+                            </li>
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center ps-3">
+                                    <input id="friday" name="day" type="checkbox" value="Friday"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="friday"
+                                        class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Friday</label>
+                                </div>
+                            </li>
+                            <li class="w-full dark:border-gray-600
+                            ">
+                                <div class="flex items-center ps-3 
+                                ">
+                                    <input id="saturday" name="day" type="checkbox" value="Saturday"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="saturday"
+                                        class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Saturday</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <form class="mb-4 w-full">
+                        <label for="duration"
+                            class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-900">Duration</label>
+                        <select id="duration-form"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                            <option selected>Choose a Format</option>
+                            <option value="lectures">No. of lectures</option>
+                            <option value="start-end-date">Start & End Date</option>
+                        </select>
+                    </form>
+
+                    <form class="mb-6 w-full hidden" id="lectures-form">
+                        <label for="number-input"
+                            class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-900">Lectures</label>
+                        <input type="number" id="lectures-input" aria-describedby="helper-text-explanation"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                            required />
+                    </form>
+
+                    <div id="start-end-date-form" class="hidden ">
+                        <div date-rangepicker class="flex items-center mb-4 justify-center flex-col sm:flex-row">
+                            <div class=" w-full">
+                                <input id="start-date-input" name="start" type="date"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg   focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:  dark:focus:border-blue-500">
+                            </div>
+                            <span class="mx-4 text-gray-900 font-semibold">to</span>
+                            <div class=" w-full">
+                                <input id="end-date-input" name="end" type="date"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg   focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:  dark:focus:border-blue-500">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        
+                        <label for="number-input" class="block mb-2 text-lg font-medium text-gray-900 
+                      
+                        ">Add
+                            topics:</label>
+                        <div class="flex rounded-lg mb-4">
+                            <textarea id="topics-input" rows="6"
+                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300   focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:  dark:focus:border-blue-500"
+                                placeholder="Write your topics here..."></textarea>
+                        </div>
+                    </div>
+                    <div class="hidden w-full" id="submit-btn-container">
+                        <div class="flex justify-end w-full ">
+                            <button id="cancel" type="button"
+                                class="bg-gray-100 border border-black hover:bg-gray-300 text-black font-bold px-5 py-2 me-2 rounded-lg"
+                                onclick="displayDashboard()">Cancel</button>
+                            <button id="submit" type="button"
+                                class="bg-gray-700 border border-black hover:bg-gray-800 text-white font-bold px-5 py-2 rounded-lg">Submit</button>
+                        </div>
+                    </div>
+                    <div class="hidden w-full" id="update-btn-container">
+                        <div class="flex justify-end w-full ">
+                            <button id="cancel" type="button"
+                                class="bg-gray-100 border border-black hover:bg-gray-300 text-black font-bold px-5 py-2 me-2 rounded-lg"
+                                onclick="displayDashboard()">Cancel</button>
+                            <button id="update-plan" type="button"
+                                class="bg-gray-700 border border-black hover:bg-gray-800 text-white font-bold px-5 py-2 rounded-lg" onclick="updatePlanHandler()">Update
+                                Plan</button>
+                        </div>
+                    </div>
+                </div>
+
+             </div>
+            
+            </div>
+        </section>
+    </main>
+
+    <script src="./index.js"></script>
+</body>
+
+</html>
